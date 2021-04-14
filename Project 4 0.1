@@ -11,22 +11,62 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
+#a='he didnâ€™t notice that the lights had changed\n'
+#b=a.encode('utf-8','replace')
 
-
-##
 class networks:
-    def __init__(self):
+    def __init__(self,):
         print('init')
-        ##pulling in training data
-        
-    def maketrain(self,filename,winsize,stride,outfilename):#task 1
-    
+    def maketrain(self,filename,winsize,stride,outname):#task 1
+        self.filename=filename
+        self.winsize=winsize
+        self.stride=stride
+        self.outname=outname
+
+        ##reading in file
+        data=open(self.filename,'r').readlines()
+        chardata=open(self.filename,'r').read()
+        chars=list(set(chardata))
+        lines,char_size,vocab_size=len(data),len(chardata),len(chars)#lines is amount of sequences
+        print ('data has {} lines, {} characters, {} unique characters'.format(lines,char_size, vocab_size))
+
+        ## creating output file
+        # using modified code from https://stackoverflow.com/questions/41373371/moving-window-in-numpy-with-dynamic-stride-and-window-size?noredirect=1&lq=1
+        output=[]#size starts unitialized
+        for i in range(lines):
+            parse=data[i]
+            parse=parse[:-1]#removing new line symbol
+            for index in range(0,len(parse)-self.winsize,self.stride):
+                outstring=parse[index:index+self.winsize+1]+'\n'
+                outstring=str(outstring.encode("ascii", "ignore"),'utf-8')#removing all non-ascii characters, reading in the texts produces some wonkiness
+                output.append(outstring)
+                print(outstring)
+        outfile=open(self.outname,'w+')
+        outfile.writelines(output)
+        outfile.close()
+        return output
+
     def makearray(self,filename):#task 2
+        self.filename
 
     def predict(self,modelname,winsize,initchar,qi,char2make):#task 3
+        self.modelname
+        self.winsize
+        self.initchar
+        self.qi
+        self.char2make
 
     def trainmodel(self,model,traindata,epochs=10,lr=0.1,lrfactor=0.2,mom=0.1):#task 4
-
+        self.model
+        self.traindata
+        self.epochs
+        self.lr
+        self.lrfactor
+        self.mom
     
 
-## 8 network comparison results #tasks 5 and 6
+## 8 network comparison results #tasks 5 and 6, testing for now.
+NETWORKS=networks()
+trainingdata=NETWORKS.maketrain('beatles.txt',5,3,'trainingdata.txt')
+
+ 
