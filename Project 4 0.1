@@ -47,7 +47,24 @@ class networks:
         return output
 
     def makearray(self,filename):#task 2
-        self.filename
+        self.filename=filename
+        infile=open(self.filename,'r').readlines()
+        alphabet=open(self.filename,'r').read()
+        alphabet=alphabet.replace('\n','')#removing new line symbol
+        infile=np.array(infile)
+        m=len(infile)#number of sequences
+        n=len(infile[0])-1#sequence length minus 1 to account for newline
+        p=len(list(set(alphabet)))#amount of unique characters
+        alphabet=list(set(alphabet))#all characters in training data
+        inputarray=np.zeros((m,n,p))#one-hot encoded input array
+
+        ##one-hot encoding using code from here:https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/
+        char_to_int = dict((c, i) for i, c in enumerate(alphabet))
+        int_to_char = dict((i, c) for i, c in enumerate(alphabet))
+        for i in range(0,m):
+            sequence=infile[i][0:n]
+            integerencode=[char_to_int[char] for char in sequence]#cuts off newline symbol
+            inputarray[i,:,:]=to_categorical(integerencode,num_classes=p)
 
     def predict(self,modelname,winsize,initchar,qi,char2make):#task 3
         self.modelname
@@ -68,5 +85,4 @@ class networks:
 ## 8 network comparison results #tasks 5 and 6, testing for now.
 NETWORKS=networks()
 trainingdata=NETWORKS.maketrain('beatles.txt',5,3,'trainingdata.txt')
-
- 
+arrays=NETWORKS.makearray('trainingdata.txt')
