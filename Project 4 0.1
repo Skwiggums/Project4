@@ -66,6 +66,10 @@ class networks:
             integerencode=[char_to_int[char] for char in sequence]#cuts off newline symbol
             inputarray[i,:,:]=to_categorical(integerencode,num_classes=p)
 
+        outputarray=np.zeros(m,p)
+
+        return inputarray,outputarray
+        
     def predict(self,modelname,winsize,initchar,qi,char2make):#task 3
         self.modelname
         self.winsize
@@ -85,4 +89,5 @@ class networks:
 ## 8 network comparison results #tasks 5 and 6, testing for now.
 NETWORKS=networks()
 trainingdata=NETWORKS.maketrain('beatles.txt',5,3,'trainingdata.txt')
-arrays=NETWORKS.makearray('trainingdata.txt')
+inputarray,outputarray=NETWORKS.makearray('trainingdata.txt')
+ 
